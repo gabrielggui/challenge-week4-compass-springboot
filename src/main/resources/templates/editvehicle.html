@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Editar veículo</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+
+  <link href="/assets/css/styles.css" rel="stylesheet" />
+</head>
+
+<body onload="toggleComponents()">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top" id="mainNav">
+    <div class="container px-3">
+      <a class="navbar-brand" href="/#">
+        <img src="/assets/img/compass-logo.svg">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+          class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/list">Listar veículos</a></li>
+          <li class="nav-item"><a class="nav-link" href="/register">Cadastrar veículo</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header-->
+  <header class="breadcrumb text-white text-center">
+    <div class="breadcrumb-content">
+      <div class="container px-3">
+        <h2 class="display-4">
+          <span>Editar veículo</span>
+        </h2>
+      </div>
+    </div>
+  </header>
+  <!-- Content section 2-->
+  <section class="mt-5 text-center" id="servicos">
+    <div class="container" style="max-width: 700px;">
+      <form action="/register/save" method="post">
+
+        <input type="text" name="id" th:field="*{vehicle.id}" hidden>
+        
+        <div class="form-group mb-3">
+          <label for="categories">Tipo de veículo:</label>
+          <select class="form-control" id="categories" name="categories" onchange="toggleComponents()" required>
+            <option disabled>Selecione...</option>
+            <option value="car" th:selected="${vehicle.getClass().getSimpleName() == 'Car'}">Carro</option>
+            <option value="motorcycle" th:selected="${vehicle.getClass().getSimpleName() == 'Motorcycle'}">Moto</option>
+            <option value="bicycle" th:selected="${vehicle.getClass().getSimpleName() == 'Bicycle'}">Bicicleta</option>
+            <option value="truck" th:selected="${vehicle.getClass().getSimpleName() == 'Truck'}">Caminhão</option>
+            <option value="charrete" th:selected="${vehicle.getClass().getSimpleName() == 'Charrete'}">Charrete</option>
+          </select>
+        </div>
+
+        <div class="form-group row mb-3">
+          <div class="col">
+            <label for="brand">Marca:</label>
+            <input type="text" class="form-control" id="brand" name="brand" th:field="*{vehicle.brand}" required>
+          </div>
+          <div class="col">
+            <label for="model">Modelo:</label>
+            <input type="text" class="form-control" id="model" name="model" th:field="*{vehicle.model}" required>
+          </div>
+          <div class="col">
+            <label for="modelYear">Ano Modelo:</label>
+            <input type="text" class="form-control" id="modelYear" name="modelYear" th:field="*{vehicle.modelYear}"
+              required>
+          </div>
+        </div>
+
+        <div class="form-group row mb-3">
+          <div class="col">
+            <input type="checkbox" class="form-check-input" id="hasEngine" name="hasEngine"
+              th:field="*{vehicle.hasEngine}">
+              <input type="hidden" name="hasEngine" value="false">
+            <label for="hasEngine">Possui motor</label>
+          </div>
+          <div class="col">
+            <input type="checkbox" class="form-check-input" id="hasSteeringWheel" name="hasSteeringWheel"
+              th:field="*{vehicle.hasSteeringWheel}">
+              <input type="hidden" name="hasSteeringWheel" value="false">
+            <label for="hasSteeringWheel">Possui volante</label>
+          </div>
+          <div class="col">
+            <input type="checkbox" class="form-check-input" id="isCargoVehicle" name="isCargoVehicle"
+              th:field="*{vehicle.isCargoVehicle}">
+              <input type="hidden" name="isCargoVehicle" value="false">
+            <label for="isCargoVehicle">É veículo de carga</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group mb-3">
+              <label for="passengerCount">Quantidade de Passageiros:</label>
+              <input type="text" class="form-control" id="passengerCount" name="passengerCount"
+                th:field="*{vehicle.passengerCount}" pattern="[0-9]+" 
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="doorCount">Quantidade de Portas:</label>
+              <input type="text" class="form-control" id="doorCount" name="doorCount"
+                th:field="*{vehicle.doorCount}" pattern="[0-9]+" 
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group mb-3">
+              <label for="wheelCount">Quantidade de Rodas:</label>
+              <input type="text" class="form-control" id="wheelCount" name="wheelCount"
+                th:field="*{vehicle.wheelCount}" pattern="[0-9]+" 
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="cargoCapacity">Capacidade de Carga (em kg):</label>
+              <input type="number" step="0.01" class="form-control" id="cargoCapacity" name="cargoCapacity"
+                th:field="*{vehicle.cargoCapacity}" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="fuels">Combustíveis:</label>
+          <select class="form-control" id="fuels" name="fuels" multiple required>
+            <option th:each="fuel : ${allFuels}" th:value="${fuel}" th:selected="${vehicle.fuels.contains(fuel)}"
+              th:text="${fuel}"></option>
+          </select>
+        </div>
+
+        <div style="display: none;" id="carComponents">
+          <div class="row">
+            <div class="col">
+              <div class="form-group form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="hasAirConditioning" name="hasAirConditioning"
+                  th:checked="${vehicle.getClass().getSimpleName() == 'Car' && vehicle.hasAirConditioning}">
+                  <input type="hidden" name="hasAirConditioning" value="false">
+                <label class="form-check-label" for="hasAirConditioning">Possui ar condicionado</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="hasRadio" name="hasRadio"
+                  th:checked="${vehicle.getClass().getSimpleName() == 'Car' && vehicle.hasRadio}">
+                  <input type="hidden" name="hasRadio" value="false">
+                <label class="form-check-label" for="hasRadio">Possui rádio</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: none;" id="motorcycleComponents">
+          <div class="form-group form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="hasElectricStart" name="hasElectricStart"
+              th:checked="${vehicle.getClass().getSimpleName() == 'Motorcycle' && vehicle.hasElectricStart}">
+              <input type="hidden" name="hasElectricStart" value="false">
+            <label class="form-check-label" for="hasElectricStart">Possui partida elétrica:</label>
+          </div>
+        </div>
+
+        <div style="display: none;" id="bicycleComponents">
+          <div class="form-group form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="hasLuggageCarrier" name="hasLuggageCarrier"
+              th:checked="${vehicle.getClass().getSimpleName() == 'Bicycle' && vehicle.hasLuggageCarrier}">
+              <input type="hidden" name="hasLuggageCarrier" value="false">
+            <label class="form-check-label" for="hasLuggageCarrier">Possui bagageiro:</label>
+          </div>
+        </div>
+
+        <div style="display: none;" id="truckComponents">
+          <div class="form-group mb-3">
+            <label for="numberOfAxles">Número de eixos:</label>
+            <input type="text" step="1" class="form-control" id="numberOfAxles" name="numberOfAxles"
+              th:if="${vehicle.getClass().getSimpleName() == 'Truck'}" th:value="${vehicle.numberOfAxles}"
+              pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');" >
+          </div>
+        </div>
+
+        <input type="submit" class="btn btn-primary mb-3" value="Enviar">
+    </div>
+    </form>
+    </div>
+  </section>
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', event => {
+
+      // Navbar shrink function
+      var navbarShrink = function () {
+        const navbarCollapsible = document.body.querySelector('#mainNav');
+        if (!navbarCollapsible) {
+          return;
+        }
+        if (window.scrollY === 0) {
+          navbarCollapsible.classList.remove('navbar-shrink')
+        } else {
+          navbarCollapsible.classList.add('navbar-shrink')
+        }
+
+      };
+
+      // Shrink the navbar 
+      navbarShrink();
+
+      // Shrink the navbar when page is scrolled
+      document.addEventListener('scroll', navbarShrink);
+
+      // Activate Bootstrap scrollspy on the main nav element
+      const mainNav = document.body.querySelector('#mainNav');
+      if (mainNav) {
+        new bootstrap.ScrollSpy(document.body, {
+          target: '#mainNav',
+          offset: 74,
+        });
+      };
+    });
+
+    function toggleComponents() {
+      var select = document.getElementById("categories");
+      var selectedOption = select.value;
+
+      var carComponents = document.getElementById("carComponents");
+      var motorcycleComponents = document.getElementById("motorcycleComponents");
+      var bicycleComponents = document.getElementById("bicycleComponents");
+      var truckComponents = document.getElementById("truckComponents");
+
+      if (selectedOption === "car") {
+        carComponents.style.display = "block";
+        motorcycleComponents.style.display = "none";
+        bicycleComponents.style.display = "none";
+        truckComponents.style.display = "none";
+
+      } else if (selectedOption === "motorcycle") {
+        carComponents.style.display = "none";
+        motorcycleComponents.style.display = "block";
+        bicycleComponents.style.display = "none";
+        truckComponents.style.display = "none";
+
+      } else if (selectedOption === "bicycle") {
+        carComponents.style.display = "none";
+        motorcycleComponents.style.display = "none";
+        bicycleComponents.style.display = "block";
+        truckComponents.style.display = "none";
+
+      } else if (selectedOption === "truck") {
+        carComponents.style.display = "none";
+        motorcycleComponents.style.display = "none";
+        bicycleComponents.style.display = "none";
+        truckComponents.style.display = "block";
+
+      } else if (selectedOption === "charrete") {
+        carComponents.style.display = "none";
+        motorcycleComponents.style.display = "none";
+        bicycleComponents.style.display = "none";
+        truckComponents.style.display = "none";
+
+      } else {
+        carComponents.style.display = "none";
+        motorcycleComponents.style.display = "none";
+        bicycleComponents.style.display = "none";
+        truckComponents.style.display = "none";
+      }
+    }
+
+  </script>
+</body>
+
+</html>
